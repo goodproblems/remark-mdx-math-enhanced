@@ -42,7 +42,7 @@ console.log(contents)
 
 Will result in something like
 
-```mdx
+```jsx
 
 export const pi = Math.PI
 
