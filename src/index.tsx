@@ -1,3 +1,3 @@
-import plugin from './remarkMathMdx'
+import plugin from './remarkMathMdx.js'
 
 export default plugin

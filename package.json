@@ -1,8 +1,8 @@
 {
-  "version": "0.3.0",
+  "version": "0.3.1",
   "name": "remark-math-mdx",
   "license": "MIT",
-  "main": "dist/src/index.js",
+  "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "type": "module",
   "files": [
@@ -28,16 +28,6 @@
     "trailingComma": "es5"
   },
   "author": "Matt Vague",
-  "size-limit": [
-    {
-      "path": "dist/remark-math-mdx.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/remark-math-mdx.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@babel/preset-typescript": "^7.16.7",

@@ -2,6 +2,10 @@
   "include": [
     "src"
   ],
+  "exclude": [
+    "**/*.(spec|test).ts",
+    "node_modules"
+  ],
   "compilerOptions": {
     "outDir": "dist",
     "types": [
