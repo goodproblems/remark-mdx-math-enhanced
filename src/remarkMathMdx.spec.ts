@@ -5,17 +5,17 @@ import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import remarkMdx from 'remark-mdx';
 import remarkStringify from 'remark-stringify';
-import remarkMathMdxPlugin from './remarkMathMdx';
+import remarkMdxMathEnhancedPlugin from './remarkMathMdx';
 import { removePosition } from 'unist-util-remove-position';
 
-describe('remarkMathMdxPlugin', () => {
+describe('remarkMdxMathEnhancedPlugin', () => {
   it('should compile inline katex', () => {
     expect(
       unified()
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkMdx)
-        .use(remarkMathMdxPlugin)
+        .use(remarkMdxMathEnhancedPlugin)
         .use(remarkStringify)
         .processSync(String.raw`Hey this is math $\frac{a}{b}$`)
         .toString()
@@ -31,7 +31,7 @@ describe('remarkMathMdxPlugin', () => {
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkMdx)
-        .use(remarkMathMdxPlugin)
+        .use(remarkMdxMathEnhancedPlugin)
         .use(remarkStringify)
         .processSync(
           String.raw`
@@ -59,7 +59,7 @@ $$`
           .use(remarkParse)
           .use(remarkMath)
           .use(remarkMdx)
-          .use(remarkMathMdxPlugin)
+          .use(remarkMdxMathEnhancedPlugin)
           .use(remarkStringify)
           .processSync(
             String.raw`Hey this is math with JS $\pi = \js{Math.PI}$`
@@ -77,7 +77,7 @@ $$`
           .use(remarkParse)
           .use(remarkMath)
           .use(remarkMdx)
-          .use(remarkMathMdxPlugin)
+          .use(remarkMdxMathEnhancedPlugin)
           .use(remarkStringify)
           .processSync(
             String.raw`Hey this is math with JS
@@ -102,7 +102,7 @@ $$
       expect(
         unified()
           .use(remarkParse)
-          .use(remarkMathMdxPlugin)
+          .use(remarkMdxMathEnhancedPlugin)
           .runSync(
             removePosition(
               unified()
@@ -171,7 +171,7 @@ $$
           .use(remarkParse)
           .use(remarkMath)
           .use(remarkMdx)
-          .use(remarkMathMdxPlugin)
+          .use(remarkMdxMathEnhancedPlugin)
           .use(remarkStringify)
           .processSync(
             String.raw`Hey this is math with JS

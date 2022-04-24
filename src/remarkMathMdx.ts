@@ -27,7 +27,7 @@ import type { Program } from 'estree-jsx';
  * @param {string} options.component - Name of react component to transform remark math nodes to (which will render math)
  * @param {RegExp} options.expressionPattern - Regex to match JS expressions inside of math to convert to `${...}`. Default is to match `\js{...}`
  */
-export default function remarkMathMdxPlugin(
+export default function remarkMdxMathEnhancedPlugin(
   options = {
     component: 'Katex',
     expressionPattern: /\\js\{([^\{\}]+)\}/gm,
