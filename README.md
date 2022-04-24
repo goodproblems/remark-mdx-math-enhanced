@@ -55,7 +55,7 @@ Note how `\js{pi}` has been replaced by `${pi}` which is a valid [string interpo
 
 ❗️ **TODO** Document how to customize expression pattern
 
-For an example implementation of a `<Katex/>` component see `examples/Katex.js`
+For an example implementation of a `<Katex/>` component see [examples/Katex.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Katex.js)
 
 ## API
 
