@@ -4,17 +4,19 @@
 
 The main advantage of this plugin over `rehype-katex` is that it supports JS expressions inside of math environemnts, similar to how MDX supports JS expressions inside of `{...}`. This allows for dynamic math expressions which depend on props, etc
 
-🚨 **IMPORTANT** this package is very new and is being developed, probably shouldn't use it in your app quite yet
+🚨 **Important** this package is very new and is being developed, probably shouldn't use it in your app quite yet
 
 **Note** this plugin expects math to be rendered at run time inside of a React component instead of at compile time like rehype-katex. This means user's browsers have to do more work and should be used only when dynamic math (i.e. math with JS expressions inside) is required.
 
 ## Install
 
-Install with npm `npm install remark-math`
+Install with npm `npm install remark-mdx-math-enhanced`
 
-$# Use 
+## Use 
 
-Say we have the following .mdx file
+❗️ **TODO!** Double check this example works!!!
+
+Say we have the following .mdx file where we want to render some Katex with a generated value of pi
 
 ```mdx
 export const pi = Math.PI
@@ -25,20 +27,20 @@ $\pi = \js{pi}$
 And an MDX setup something like this
 
 ```js
-import { readFileSync } from 'fs';
+import { readFileSync } from 'fs'
 
-import remarkMath from 'remark-math';
-import { compileSync } from 'xdm';
+import remarkMath from 'remark-math'
 import remarkMdxEnhanced from 'remark-mdx-math-enhanced'
+import { compileSync } from '@mdx-js/mdx'
 
 const { contents } = compileSync(readFileSync('example.mdx'), {
-  jsx: true,
-  remarkPlugins: [remarkMath, [remarkMathMdx, { component: 'Katex' }]],
-});
-console.log(contents);
+  remarkPlugins: [remarkMath, [remarkMdxEnhanced, { component: 'Katex' }]]
+})
+
+console.log(contents)
 ```
 
-Will result in
+Will result in something like
 
 ```mdx
 
@@ -49,7 +51,13 @@ export default function MDXContent() {
 }
 ```
 
+Note how `\js{pi}` has been replaced by `${pi}` which is a valid [string interpolation placeholder](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation)
+
+❗️ **TODO** Document how to customize expression pattern
+
+For an example implementation of a `<Katex/>` component see `examples/Katex.js`
+
 ## API
 
-TODO
+❗️️ **TODO!**
 
