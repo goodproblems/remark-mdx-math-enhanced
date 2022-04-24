@@ -1,5 +1,6 @@
 {
   "version": "0.1.0",
+  "name": "remark-math-mdx",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -9,7 +10,7 @@
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "scripts": {
     "start": "tsdx watch",
@@ -36,7 +37,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "remark-math-mdx",
   "author": "Matt Vague",
   "module": "dist/remark-math-mdx.esm.js",
   "size-limit": [
