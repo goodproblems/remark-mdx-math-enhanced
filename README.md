@@ -28,8 +28,8 @@ And an MDX setup something like this
 import { readFileSync } from 'fs';
 
 import remarkMath from 'remark-math';
-import remarkMathMdx from 'remark-math-mdx';
 import { compileSync } from 'xdm';
+import remarkMdxEnhanced from 'remark-mdx-math-enhanced'
 
 const { contents } = compileSync(readFileSync('example.mdx'), {
   jsx: true,

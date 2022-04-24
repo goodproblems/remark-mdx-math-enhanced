@@ -1,6 +1,6 @@
 {
   "version": "0.3.1",
-  "name": "remark-math-mdx",
+  "name": "remark-mdx-math-enhanced",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
