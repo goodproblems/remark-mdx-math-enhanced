@@ -51,7 +51,6 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.17.9",
-    "@goodproblems/prettier-config": "^1.0.1",
     "@mdx-js/mdx": "^2.1.1",
     "@size-limit/preset-small-lib": "^7.0.8",
     "@storybook/addon-essentials": "^6.4.22",
@@ -67,6 +66,7 @@
     "babel-jest": "^27.5.1",
     "babel-loader": "^8.2.5",
     "cross-env": "^7.0.3",
+    "eslint-plugin-prettier": "^4.0.0",
     "hast": "^1.0.0",
     "husky": "^7.0.4",
     "jest": "^27.5.1",

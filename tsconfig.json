@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
     "types": [
-      "jest"
+      "jest",
+      "mdast-util-mdx-jsx",
+      "mdast-util-mdx-expression",
+      "mdast"
     ],
     "downlevelIteration": true,
     "incremental": true,
