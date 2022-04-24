@@ -1,8 +1,8 @@
 {
-  "version": "0.2.1",
+  "version": "0.3.0",
   "name": "remark-math-mdx",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "typings": "dist/index.d.ts",
   "type": "module",
   "files": [
@@ -13,21 +13,13 @@
     "node": ">=12"
   },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
+    "build": "rm -rf dist && tsc",
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
-    "lint": "tsdx lint",
-    "prepare": "tsdx build",
     "size": "size-limit",
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
     "react": ">=16"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
   },
   "prettier": {
     "printWidth": 80,
@@ -36,7 +28,6 @@
     "trailingComma": "es5"
   },
   "author": "Matt Vague",
-  "module": "dist/remark-math-mdx.esm.js",
   "size-limit": [
     {
       "path": "dist/remark-math-mdx.cjs.production.min.js",
@@ -72,7 +63,6 @@
     "remark-stringify": "^10.0.2",
     "size-limit": "^7.0.8",
     "ts-jest": "^27.1.4",
-    "tsdx": "^0.14.1",
     "tslib": "^2.4.0",
     "typescript": "^4.6.3",
     "unist-builder": "^3.0.0",

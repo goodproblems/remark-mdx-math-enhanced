@@ -1,5 +1,9 @@
 {
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
+    "outDir": "dist",
     "types": [
       "jest",
       "mdast-util-mdx-jsx",
@@ -22,8 +26,8 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true,
     "resolveJsonModule": true,
+    "declaration": true,
     // Ensure that Babel can safely transpile files in the TypeScript project
     "isolatedModules": true
   },
