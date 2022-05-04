@@ -3,6 +3,16 @@ import { Parser } from 'acorn';
 import type { Root, Literal, Parent } from 'mdast';
 import type { Program } from 'estree-jsx';
 
+const DEFAULT_OPTIONS = {
+  component: 'Math',
+  expressionPattern: /\\js\{([^\{\}]+)\}/gm,
+}
+
+export type Options = {
+  component: string,
+  expressionPattern: RegExp
+}
+
 /**
  * Plugin to transform math nodes (like from remark-math) to JSX element nodes which render math at run time (likely using Katex)
  *
@@ -23,16 +33,15 @@ import type { Program } from 'estree-jsx';
  * at compile time like rehype-katex. This means user's browsers have to do more work and should be used
  * only when dynamic math (i.e. math with JS expressions inside) is required.
  *
- * @param {Object} options
- * @param {string} options.component - Name of react component to transform remark math nodes to (which will render math)
- * @param {RegExp} options.expressionPattern - Regex to match JS expressions inside of math to convert to `${...}`. Default is to match `\js{...}`
+ * @param options
+ * @param options.component - Name of react component to transform remark math nodes to (which will render math)
+ * @param options.expressionPattern - Regex to match JS expressions inside of math to convert to `${...}`. Default is to match `\js{...}`
  */
 export default function remarkMdxMathEnhancedPlugin(
-  options = {
-    component: 'Katex',
-    expressionPattern: /\\js\{([^\{\}]+)\}/gm,
-  }
+  options?: Options
 ) {
+  const { component, expressionPattern } = { ...DEFAULT_OPTIONS, ...options }
+
   return (tree: Root) => {
     visit<Root>(tree, (node, index, parent: Parent) => {
       if (isMathNode(node)) {
@@ -41,7 +50,7 @@ export default function remarkMdxMathEnhancedPlugin(
 
         parent.children.splice(index, 1, {
           type: 'mdxJsxFlowElement',
-          name: options.component,
+          name: component,
           attributes: [
             {
               type: 'mdxJsxAttribute',
@@ -68,7 +77,7 @@ export default function remarkMdxMathEnhancedPlugin(
 
         parent.children.splice(index, 1, {
           type: 'mdxJsxTextElement',
-          name: options.component,
+          name: component,
           attributes: [],
           children: [{
             type: 'mdxTextExpression',
@@ -88,7 +97,7 @@ export default function remarkMdxMathEnhancedPlugin(
    * evaluate the contents of the macro as javascript
    */
   function transformJSExpressions(string: string) {
-    return string.replace(options.expressionPattern, '${$1}').trim();
+    return string.replace(expressionPattern, '${$1}').trim();
   }
 
   /**
