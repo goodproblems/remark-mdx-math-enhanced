@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import katex from 'katex';
 
-// TODO!! Triple check this is working
-
 export function Math({ children = '', display = false, options }) {
   const Wrapper = display ? 'div' : 'span';
   if (typeof children !== 'string')
@@ -12,30 +10,28 @@ export function Math({ children = '', display = false, options }) {
     let result;
 
     try {
-      result = katexr.renderToString(value, {
+      result = katex.renderToString(children, {
         ...options,
         displayMode: display,
         throwOnError: true,
-        macros,
         globalGroup: true,
         trust: true,
         strict: false,
       });
     } catch (error) {
       console.error(error);
-      result = katex.renderToString(value, {
+      result = katex.renderToString(children, {
         ...options,
         displayMode: display,
         throwOnError: false,
         strict: 'ignore',
-        macros,
         globalGroup: true,
         trust: true,
       });
     }
 
     return result;
-  }, [value, options, macros]);
+  }, [children]);
 
-  return <div dangerouslySetInnerHTML={{ __html: renderedKatex || '' }} />;
+  return <Wrapper dangerouslySetInnerHTML={{ __html: renderedKatex || '' }} />;
 }
