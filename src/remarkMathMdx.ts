@@ -18,23 +18,6 @@ export type Options = {
 /**
  * Plugin to transform math nodes to JSX element nodes which render math at run time
  *
- * Supports JS expressions inside of math similar to how MDX supports JS expressions inside of {...}
- * Allows for dynamic math expressions not possible with usage of existing solutions like rehype-katex
- *
- * e.g.
- *
- * export const pi = Math.PI
- *
- * $\js{props.n}\pi = \js{props.n * pi}$
- *
- * is transformed to
- *
- * <Math>{String.raw`${props.n}\pi = ${props.n * pi}`}</Math>
- *
- * **Note** this plugin expects math to be rendered at run time inside of a React compoent instead of
- * at compile time like rehype-katex. This means user's browsers have to do more work and should be used
- * only when dynamic math (i.e. math with JS expressions inside) is required.
- *
  * @param options
  * @param options.component - Name of react component to transform remark math nodes to (which will render math)
  * @param options.expressionPattern - Regex to match JS expressions inside of math to convert to `${...}`. Default is to match `\js{...}`
