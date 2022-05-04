@@ -9,7 +9,7 @@ The main difference with this plugin and [rehype-katex](https://github.com/remar
 
 **Note:** This plugin expects you to define your own `Math` component which will handle rendering. For an example implementation of a `<Math/>` component using [Katex](http://katex.org) see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
 
-**Note:** Rendering math at runtime instead of compile time means browsers have to do more owrk. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
+**Note:** Rendering math at runtime instead of compile time means browsers have to do more work. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
 
 ## Install
 
