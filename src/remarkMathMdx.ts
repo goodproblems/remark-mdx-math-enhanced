@@ -1,6 +1,6 @@
 /** @typedef {import('remark-math')} */
 
-import { visit, CONTINUE } from 'unist-util-visit';
+import { visit } from 'unist-util-visit';
 import { Parser } from 'acorn';
 import type { Root } from 'mdast';
 import type { Program } from 'estree-jsx';
@@ -52,8 +52,6 @@ export default function remarkMdxMathEnhancedPlugin(
             },
           ],
         });
-
-        return [CONTINUE, index];
       }
 
       if (node.type === 'inlineMath') {
