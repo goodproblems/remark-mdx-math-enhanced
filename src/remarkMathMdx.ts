@@ -75,8 +75,8 @@ export default function remarkMdxMathEnhancedPlugin(
   };
 
   /**
-   * Replaces any instances of expressionMarker in a string with $ in order to
-   * evaluate the contents of the macro as javascript
+   * Replaces any instances of expressionMarker in string that are followed by a curly
+   * braces with $ in order to create a valid template string literal
    */
   function transformToTemplateString(string: string, expressionMarker: string) {
     return string.replace(new RegExp(`(${expressionMarker.replace(/\\/, '\\\\')})(?=\{)`, 'g'), '$')
