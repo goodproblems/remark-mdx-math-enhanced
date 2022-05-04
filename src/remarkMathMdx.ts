@@ -14,20 +14,20 @@ export type Options = {
 }
 
 /**
- * Plugin to transform math nodes (like from remark-math) to JSX element nodes which render math at run time (likely using Katex)
+ * Plugin to transform math nodes to JSX element nodes which render math at run time
  *
  * Supports JS expressions inside of math similar to how MDX supports JS expressions inside of {...}
- * Allows for dynamic math expressions not possible with usage of something like rehype-katex
+ * Allows for dynamic math expressions not possible with usage of existing solutions like rehype-katex
  *
  * e.g.
  *
  * export const pi = Math.PI
  *
- * $\pi = \js{pi}$
+ * $\js{props.n}\pi = \js{props.n * pi}$
  *
  * is transformed to
  *
- * <Katex>{String.raw`\pi = ${pi}`}</Katex>
+ * <Math>{String.raw`${props.n}\pi = ${props.n * pi}`}</Math>
  *
  * **Note** this plugin expects math to be rendered at run time inside of a React compoent instead of
  * at compile time like rehype-katex. This means user's browsers have to do more work and should be used
