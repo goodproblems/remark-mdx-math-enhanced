@@ -20,7 +20,7 @@ describe('remarkMdxMathEnhancedPlugin', () => {
         .processSync(String.raw`Hey this is math $\frac{a}{b}$`)
         .toString()
     ).toEqual(
-      String.raw`Hey this is math <Katex>{\frac{a}{b}}</Katex>
+      String.raw`Hey this is math <Math>{\frac{a}{b}}</Math>
 `
     );
   });
@@ -45,112 +45,89 @@ $$`
     ).toEqual(
       String.raw`Hey this is math
 
-<Katex display>
+<Math display>
   {\frac{a}{b}}
-</Katex>
+</Math>
 `
     );
   });
 
-  describe('JS expressions', () => {
-    it('should compile inline katex with JS expressions', () => {
-      expect(
-        unified()
-          .use(remarkParse)
-          .use(remarkMath)
-          .use(remarkMdx)
-          .use(remarkMdxMathEnhancedPlugin)
-          .use(remarkStringify)
-          .processSync(
-            String.raw`Hey this is math with JS $\pi = \js{Math.PI}$`
-          )
-          .toString()
-      ).toEqual(
-        `Hey this is math with JS <Katex>{\\pi = $\{Math.PI\}}</Katex>
+  it('should compile inline katex with JS expressions', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .use(remarkMdx)
+        .use(remarkMdxMathEnhancedPlugin)
+        .use(remarkStringify)
+        .processSync(
+          String.raw`Hey this is math with JS $\pi = \js{Math.PI}$`
+        )
+        .toString()
+    ).toEqual(
+      `Hey this is math with JS <Math>{\\pi = $\{Math.PI\}}</Math>
 `
-      );
-    });
+    );
+  });
 
-    it('should compile display katex with JS expressions', () => {
-      expect(
-        unified()
-          .use(remarkParse)
-          .use(remarkMath)
-          .use(remarkMdx)
-          .use(remarkMdxMathEnhancedPlugin)
-          .use(remarkStringify)
-          .processSync(
-            String.raw`Hey this is math with JS
+  it('should compile display katex with JS expressions', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .use(remarkMdx)
+        .use(remarkMdxMathEnhancedPlugin)
+        .use(remarkStringify)
+        .processSync(
+          String.raw`Hey this is math with JS
 
 $$
 \pi = \js{Math.PI}
 $$
-  `
-          )
-          .toString()
-      ).toEqual(
-        `Hey this is math with JS
-
-<Katex display>
-  {\\pi = $\{Math.PI\}}
-</Katex>
 `
-      );
-    });
+        )
+        .toString()
+    ).toEqual(
+      `Hey this is math with JS
 
-    it('should parse katex with JS expressions', () => {
-      expect(
-        unified()
-          .use(remarkParse)
-          .use(remarkMdxMathEnhancedPlugin)
-          .runSync(
-            removePosition(
-              unified()
-                .use(remarkParse)
-                .use(remarkMath)
-                .parse(
-                  String.raw`
+<Math display>
+  {\\pi = $\{Math.PI\}}
+</Math>
+`
+    );
+  });
+
+  it('should parse katex with JS expressions', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMdxMathEnhancedPlugin)
+        .runSync(
+          removePosition(
+            unified()
+              .use(remarkParse)
+              .use(remarkMath)
+              .parse(
+                String.raw`
 $\pi = \js{Math.PI}$
 
 $$
 \pi = \js{Math.PI}
 $$
 `
-                ),
-              true
-            )
+              ),
+            true
           )
-      ).toEqual(
-        u('root', [
-          u('paragraph', [
-            u('mdxJsxTextElement', {
-              name: 'Katex',
-              attributes: [],
-              children: [
-                {
-                  type: 'mdxTextExpression',
-                  value: '\\pi = ${Math.PI}',
-                  data: {
-                    estree: Parser.parse('String.raw`\\pi = ${Math.PI}`', {
-                      ecmaVersion: 'latest',
-                      sourceType: 'module',
-                    }),
-                  },
-                },
-              ],
-            }),
-          ]),
-          u('mdxJsxFlowElement', {
-            name: 'Katex',
-            attributes: [
-              {
-                type: 'mdxJsxAttribute',
-                name: 'display',
-              },
-            ],
+        )
+    ).toEqual(
+      u('root', [
+        u('paragraph', [
+          u('mdxJsxTextElement', {
+            name: 'Math',
+            attributes: [],
             children: [
               {
-                type: 'mdxFlowExpression',
+                type: 'mdxTextExpression',
                 value: '\\pi = ${Math.PI}',
                 data: {
                   estree: Parser.parse('String.raw`\\pi = ${Math.PI}`', {
@@ -161,31 +138,55 @@ $$
               },
             ],
           }),
-        ])
-      );
-    });
+        ]),
+        u('mdxJsxFlowElement', {
+          name: 'Math',
+          attributes: [
+            {
+              type: 'mdxJsxAttribute',
+              name: 'display',
+            },
+          ],
+          children: [
+            {
+              type: 'mdxFlowExpression',
+              value: '\\pi = ${Math.PI}',
+              data: {
+                estree: Parser.parse('String.raw`\\pi = ${Math.PI}`', {
+                  ecmaVersion: 'latest',
+                  sourceType: 'module',
+                }),
+              },
+            },
+          ],
+        }),
+      ])
+    );
+  });
 
-    it('should not blow up with unclosed js expresions', () => {
-      expect(
-        unified()
-          .use(remarkParse)
-          .use(remarkMath)
-          .use(remarkMdx)
-          .use(remarkMdxMathEnhancedPlugin)
-          .use(remarkStringify)
-          .processSync(
-            String.raw`Hey this is math with JS
+  it('should not blow up with unclosed js expresions', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .use(remarkMdx)
+        .use(remarkMdxMathEnhancedPlugin)
+        .use(remarkStringify)
+        .processSync(
+          String.raw`Hey this is math with JS
 
 $$\pi = \js{Math.PI$$
-  `
-          )
-          .toString()
-      ).toEqual(
-        String.raw`Hey this is math with JS
-
-<Katex>{\pi = \js{Math.PI}</Katex>
 `
-      );
-    });
+        )
+        .toString()
+    ).toEqual(
+      String.raw`Hey this is math with JS
+
+<Math>{\pi = \js{Math.PI}</Math>
+`
+    );
+  });
+
+`
   });
 });
