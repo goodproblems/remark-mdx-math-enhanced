@@ -53,7 +53,7 @@ export default function MDXContent(props) {
 }
 ```
 
-Note how `\js{...}` have been replaced by `${...}` which are valid [string interpolation placeholder](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation)
+Note how `\js{...}` have been replaced by `${...}` which are valid [string interpolation placeholders](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation)
 
 
 For an example implementation of a `<Math/>` using [Katex](http://katex.org) component see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
@@ -65,7 +65,7 @@ The default export is `remarkMdxMathEnhanced`.
 
 ### `unified().use(remarkMdx).use(remarkMath).use(remarkMdxMathEnhanced[, options])`
 
-Plugin to support math.
+Plugin to transform math nodes to JSX element nodes which render math at run time
 
 ##### `options`
 
@@ -73,8 +73,8 @@ Configuration (optional).
 
 ###### `options.component`
 
-Name of component which will be used to render math
+Name of react component which will be used to render math
 
 ###### `options.expressionPattern`
 
-Regular expression that matches JS expressions embedded in math. Default pattern matches `\js{...}`
+Regular expression that matches JS expressions embedded in math. Default regex matches `\js{...}`
