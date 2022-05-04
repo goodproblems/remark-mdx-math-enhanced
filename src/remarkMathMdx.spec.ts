@@ -97,7 +97,7 @@ $$
     );
   });
 
-  it('should parse katex with JS expressions', () => {
+  it('should parse JS expressions', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -160,6 +160,48 @@ $$
             },
           ],
         }),
+      ])
+    );
+  });
+
+  it.only('should parse JS expressions with nested delimiters', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMdxMathEnhancedPlugin)
+        .runSync(
+          removePosition(
+            unified()
+              .use(remarkParse)
+              .use(remarkMath)
+              .parse(
+                String.raw`
+$\pi = \js{myFunc({ a: 10 })}$
+`
+              ),
+            true
+          )
+        )
+    ).toEqual(
+      u('root', [
+        u('paragraph', [
+          u('mdxJsxTextElement', {
+            name: 'Math',
+            attributes: [],
+            children: [
+              {
+                type: 'mdxTextExpression',
+                value: '\\pi = ${myFunc({ a: 10 })}',
+                data: {
+                  estree: Parser.parse('String.raw`\\pi = ${myFunc({ a: 10 })}`', {
+                    ecmaVersion: 'latest',
+                    sourceType: 'module',
+                  }),
+                },
+              },
+            ],
+          }),
+        ])
       ])
     );
   });
