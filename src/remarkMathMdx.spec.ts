@@ -187,6 +187,43 @@ $$\pi = \js{Math.PI$$
     );
   });
 
+  it('should allow custom component name', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .use(remarkMdx, {})
+        .use(remarkMdxMathEnhancedPlugin, {
+          component: 'CustomMath'
+        } as any)
+        .use(remarkStringify)
+        .processSync(
+          String.raw`Hey this is math with JS $\pi = \js{Math.PI}$`
+        )
+        .toString()
+    ).toEqual(
+      `Hey this is math with JS <CustomMath>{\\pi = $\{Math.PI\}}</CustomMath>
 `
+    );
+  });
+
+  it('should allow custom component name', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMath)
+        .use(remarkMdx)
+        .use(remarkMdxMathEnhancedPlugin, {
+          expressionPattern: /\[\[([^\{\}]+)\]\]/gm,
+        } as any)
+        .use(remarkStringify)
+        .processSync(
+          String.raw`Hey this is math with JS $\pi = [[Math.PI]]$`
+        )
+        .toString()
+    ).toEqual(
+      `Hey this is math with JS <Math>{\\pi = $\{Math.PI\}}</Math>
+`
+    );
   });
 });
