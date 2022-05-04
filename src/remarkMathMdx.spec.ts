@@ -9,7 +9,7 @@ import remarkMdxMathEnhancedPlugin from './remarkMathMdx';
 import { removePosition } from 'unist-util-remove-position';
 
 describe('remarkMdxMathEnhancedPlugin', () => {
-  it('should compile inline katex', () => {
+  it('should compile inline katex to HTML', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -25,7 +25,7 @@ describe('remarkMdxMathEnhancedPlugin', () => {
     );
   });
 
-  it('should compile display katex', () => {
+  it('should compile display katex to HTML', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -52,7 +52,7 @@ $$`
     );
   });
 
-  it('should compile inline katex with JS expressions', () => {
+  it('should compile inline katex with JS expressions to HTML', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -97,7 +97,7 @@ $$
     );
   });
 
-  it('should parse JS expressions', () => {
+  it('should parse simple JS expressions', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -164,7 +164,7 @@ $$
     );
   });
 
-  it.only('should parse JS expressions with nested delimiters', () => {
+  it('should parse JS expressions with nested delimiters', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -206,8 +206,50 @@ $\pi = \js{myFunc({ a: 10 })}$
     );
   });
 
-  it('should not blow up with unclosed js expresions', () => {
+  it('should not match expressionMarker without a following curly', () => {
     expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMdxMathEnhancedPlugin)
+        .runSync(
+          removePosition(
+            unified()
+              .use(remarkParse)
+              .use(remarkMath)
+              .parse(
+                String.raw`
+$\pi = \js$
+`
+              ),
+            true
+          )
+        )
+    ).toEqual(
+      u('root', [
+        u('paragraph', [
+          u('mdxJsxTextElement', {
+            name: 'Math',
+            attributes: [],
+            children: [
+              {
+                type: 'mdxTextExpression',
+                value: '\\pi = \\js',
+                data: {
+                  estree: Parser.parse('String.raw`\\pi = \\js`', {
+                    ecmaVersion: 'latest',
+                    sourceType: 'module',
+                  }),
+                },
+              },
+            ],
+          }),
+        ])
+      ])
+    );
+  });
+
+  it('should blow up with unclosed js expressions', () => {
+    expect(() =>
       unified()
         .use(remarkParse)
         .use(remarkMath)
@@ -221,12 +263,7 @@ $$\pi = \js{Math.PI$$
 `
         )
         .toString()
-    ).toEqual(
-      String.raw`Hey this is math with JS
-
-<Math>{\pi = \js{Math.PI}</Math>
-`
-    );
+    ).toThrowError()
   });
 
   it('should allow custom component name', () => {
@@ -249,18 +286,18 @@ $$\pi = \js{Math.PI$$
     );
   });
 
-  it('should allow custom component name', () => {
+  it('should allow custom expressionMarker', () => {
     expect(
       unified()
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkMdx)
         .use(remarkMdxMathEnhancedPlugin, {
-          expressionPattern: /\[\[([^\{\}]+)\]\]/gm,
+          expressionMarker: '#'
         } as any)
         .use(remarkStringify)
         .processSync(
-          String.raw`Hey this is math with JS $\pi = [[Math.PI]]$`
+          String.raw`Hey this is math with JS $\pi = #{Math.PI}$`
         )
         .toString()
     ).toEqual(

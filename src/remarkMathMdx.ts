@@ -7,12 +7,12 @@ import type { Program } from 'estree-jsx';
 
 const DEFAULT_OPTIONS = {
   component: 'Math',
-  expressionPattern: /\\js\{([^\{\}]+)\}/gm,
+  expressionMarker: "\\js"
 }
 
 export type Options = {
-  component: string,
-  expressionPattern: RegExp
+  component?: string,
+  expressionMarker?: string
 }
 
 /**
@@ -20,17 +20,17 @@ export type Options = {
  *
  * @param options
  * @param options.component - Name of react component to transform remark math nodes to (which will render math)
- * @param options.expressionPattern - Regex to match JS expressions inside of math to convert to `${...}`. Default is to match `\js{...}`
+ * @param options.expressionMarker - Start delimiter of JS expressions, default is `\js`
  */
 export default function remarkMdxMathEnhancedPlugin(
   options?: Options
 ) {
-  const { component, expressionPattern } = { ...DEFAULT_OPTIONS, ...options }
+  const { component, expressionMarker } = { ...DEFAULT_OPTIONS, ...options }
 
   return (tree: Root) => {
     visit(tree, (node, index, parent) => {
       if (node.type === 'math') {
-        const transformedMath = transformJSExpressions(node.value);
+        const transformedMath = transformToTemplateString(node.value, expressionMarker);
         const estree = transformMathToEstree(transformedMath)
 
         parent.children.splice(index, 1, {
@@ -55,7 +55,7 @@ export default function remarkMdxMathEnhancedPlugin(
       }
 
       if (node.type === 'inlineMath') {
-        const transformedMath = transformJSExpressions(node.value);
+        const transformedMath = transformToTemplateString(node.value, expressionMarker);
         const estree = transformMathToEstree(transformedMath)
 
         parent.children.splice(index, 1, {
@@ -75,11 +75,11 @@ export default function remarkMdxMathEnhancedPlugin(
   };
 
   /**
-   * Replaces any instances of `\js{...}` in a string with `${...}` in order to
+   * Replaces any instances of expressionMarker in a string with $ in order to
    * evaluate the contents of the macro as javascript
    */
-  function transformJSExpressions(string: string) {
-    return string.replace(expressionPattern, '${$1}').trim();
+  function transformToTemplateString(string: string, expressionMarker: string) {
+    return string.replace(new RegExp(`(${expressionMarker.replace(/\\/, '\\\\')})(?=\{)`, 'g'), '$')
   }
 
   /**
