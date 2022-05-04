@@ -2,7 +2,7 @@
 
 > An MDX plugin enhancing math environments by adding support for embedded JS expressions (including full access to props, exports, etc), analogous to how MDX supports JS expressions inside of `{...}`
 
-**🚨 Important Note:** This plugin is quite new and currently still in beta, it's possible the API / approach may change (for example using a regex to extract JS expressions) **so use at your own risk**. Feedback / ideas are also appreciated!
+**🚨 Important Note:** This plugin is quite new and currently still in beta, it's possible the API and/or approach may change (for example using a regex to extract expressions has obvious limitations). **Use at your own risk**. Feedback / ideas are also appreciated!
 
 The main difference with this plugin and [rehype-katex](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex) is that instead of rendering math nodes at compile time, it instead transforms math nodes into JSX elements which will render their math (passed as `children` prop) at runtime. Any JS expressions embedded in katex will be parsed by [acorn](https://github.com/acornjs/acorn) and transformed to MDX expression nodes.
 
