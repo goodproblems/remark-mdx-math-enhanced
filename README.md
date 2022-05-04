@@ -4,7 +4,7 @@
 
 The main difference with this plugin and [rehype-katex](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex) is that instead of rendering math nodes at compile time, it instead transforms math nodes into JSX elements which will render their math (passed as `children` prop) at runtime. Any JS expressions embedded in katex will be parsed by [acorn](https://github.com/acornjs/acorn) and transformed to MDX expression nodes.
 
-**🚨 Important Note:** This plugin is quite new and currently still in beta, it's possible the API / approach may change a bit so use at your own risk. Feedback is also appreciated!
+**🚨 Important Note:** This plugin is quite new and currently still in beta, it's possible the API / approach may change (for example using a regex to extract JS expressions) **so use at your own risk**. Feedback / ideas are also appreciated!
 
 **Note:** This plugin expects you to define your own `Math` component which will handle rendering. For an example implementation of a `<Math/>` component using [Katex](http://katex.org) see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
 
