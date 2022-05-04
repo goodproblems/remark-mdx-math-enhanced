@@ -1,6 +1,8 @@
+/** @typedef {import('remark-math')} */
+
 import { visit, Node, CONTINUE } from 'unist-util-visit';
 import { Parser } from 'acorn';
-import type { Root, Literal, Parent } from 'mdast';
+import type { Root, Literal } from 'mdast';
 import type { Program } from 'estree-jsx';
 
 const DEFAULT_OPTIONS = {
@@ -43,8 +45,8 @@ export default function remarkMdxMathEnhancedPlugin(
   const { component, expressionPattern } = { ...DEFAULT_OPTIONS, ...options }
 
   return (tree: Root) => {
-    visit<Root>(tree, (node, index, parent: Parent) => {
-      if (isMathNode(node)) {
+    visit(tree, (node, index, parent) => {
+      if (node.type === 'math') {
         const transformedMath = transformJSExpressions(node.value);
         const estree = transformMathToEstree(transformedMath)
 
@@ -71,7 +73,7 @@ export default function remarkMdxMathEnhancedPlugin(
         return [CONTINUE, index];
       }
 
-      if (isInlineMathNode(node)) {
+      if (node.type === 'inlineMath') {
         const transformedMath = transformJSExpressions(node.value);
         const estree = transformMathToEstree(transformedMath)
 
@@ -87,7 +89,6 @@ export default function remarkMdxMathEnhancedPlugin(
             }
           }],
         });
-        return [CONTINUE, index];
       }
     });
   };
@@ -108,13 +109,5 @@ export default function remarkMdxMathEnhancedPlugin(
       ecmaVersion: 'latest',
       sourceType: 'module'
     }) as unknown as Program // acorn types are messed...
-  }
-
-  function isMathNode(node: Node): node is Literal {
-    return node.type === 'math';
-  }
-
-  function isInlineMathNode(node: Node): node is Literal {
-    return node.type === 'inlineMath';
   }
 }
