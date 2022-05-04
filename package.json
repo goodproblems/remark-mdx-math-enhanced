@@ -1,5 +1,5 @@
 {
-  "version": "0.3.1",
+  "version": "0.0.1-alpha.0",
   "name": "remark-mdx-math-enhanced",
   "license": "MIT",
   "main": "dist/index.js",
@@ -30,6 +30,7 @@
   "author": "Matt Vague",
   "devDependencies": {
     "@babel/core": "^7.17.9",
+    "@babel/preset-env": "^7.17.10",
     "@babel/preset-typescript": "^7.16.7",
     "@mdx-js/mdx": "^2.1.1",
     "@size-limit/preset-small-lib": "^7.0.8",
