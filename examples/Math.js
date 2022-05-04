@@ -3,7 +3,7 @@ import katex from 'katex';
 
 // TODO!! Triple check this is working
 
-export function Katex({ children = '', display = false, options }) {
+export function Math({ children = '', display = false, options }) {
   const Wrapper = display ? 'div' : 'span';
   if (typeof children !== 'string')
     throw new Error('Children prop must be a katex string');
@@ -37,5 +37,5 @@ export function Katex({ children = '', display = false, options }) {
     return result;
   }, [value, options, macros]);
 
-  return <Wrapper dangerouslySetInnerHTML={{ __html: renderedKatex || '' }} />;
+  return <div dangerouslySetInnerHTML={{ __html: renderedKatex || '' }} />;
 }
