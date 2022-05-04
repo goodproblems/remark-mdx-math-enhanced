@@ -1,8 +1,8 @@
 /** @typedef {import('remark-math')} */
 
-import { visit, Node, CONTINUE } from 'unist-util-visit';
+import { visit, CONTINUE } from 'unist-util-visit';
 import { Parser } from 'acorn';
-import type { Root, Literal } from 'mdast';
+import type { Root } from 'mdast';
 import type { Program } from 'estree-jsx';
 
 const DEFAULT_OPTIONS = {
