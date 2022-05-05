@@ -1,16 +1,21 @@
 # Remark MDX math enhanced
 
-> An MDX plugin that adds support for math environments with embedded JS expressions
+> An MDX plugin adding support for math environments with embedded JS expressions
+
+## What is this?
+
+This package allows math environments in MDX documents to contain embedded JavaScript expressions analogous to [MDX expressions](https://mdxjs.com/docs/what-is-mdx/#expressions). These expressions have full access to props, exports, etc.
+
+## How it works
+
+Math nodes produced by [remark-math](https://github.com/remarkjs/remark-math/tree/main/packages/remark-math) are transformed into React elements at compile time and rendered at run time via a component which your app is expected to provide (default is `Math` but is configurable)
 
 ---
 
-**🚨 Important Note:** This plugin is quite new and currently still in beta, it's possible the API and/or approach may change so **use at your own risk**.
+**🚨 Important:** This plugin is quite new and currently still in beta, it's possible the API and/or approach may change so **use at your own risk**.
 
 ---
 
-The standard approach to rendering math in MDX is to use remark-math to parse math nodes, and then rehype-katex to compile math nodes to HTML at compile time. This works great in most cases, however it does have the downside that your math must be entirely static (i.e. not containing any JS expressions). 
-
-That's where this plug-in comes into play. Instead of rendering math nodes to HTML at compile time, they are instead transformed into JSX elements. Any JS expressions embedded in katex will be parsed by [acorn](https://github.com/acornjs/acorn) and transformed to MDX expression nodes.
 
 ## Notes
 
