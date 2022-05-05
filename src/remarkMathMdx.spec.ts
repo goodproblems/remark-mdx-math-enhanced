@@ -9,7 +9,7 @@ import remarkMdxMathEnhancedPlugin from './remarkMathMdx';
 import { removePosition } from 'unist-util-remove-position';
 
 describe('remarkMdxMathEnhancedPlugin', () => {
-  it('should compile inline katex', () => {
+  it('should compile inline katex to HTML', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -25,7 +25,7 @@ describe('remarkMdxMathEnhancedPlugin', () => {
     );
   });
 
-  it('should compile display katex', () => {
+  it('should compile display katex to HTML', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -52,7 +52,7 @@ $$`
     );
   });
 
-  it('should compile inline katex with JS expressions', () => {
+  it('should compile inline katex with JS expressions to HTML', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -97,7 +97,7 @@ $$
     );
   });
 
-  it('should parse katex with JS expressions', () => {
+  it('should parse simple JS expressions', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -164,8 +164,134 @@ $$
     );
   });
 
-  it('should not blow up with unclosed js expresions', () => {
+  it('should parse JS expressions with nested curlies', () => {
     expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMdxMathEnhancedPlugin)
+        .runSync(
+          removePosition(
+            unified()
+              .use(remarkParse)
+              .use(remarkMath)
+              .parse(
+                String.raw`
+$\pi = \js{myFunc({ a: 10 })}$
+`
+              ),
+            true
+          )
+        )
+    ).toEqual(
+      u('root', [
+        u('paragraph', [
+          u('mdxJsxTextElement', {
+            name: 'Math',
+            attributes: [],
+            children: [
+              {
+                type: 'mdxTextExpression',
+                value: '\\pi = ${myFunc({ a: 10 })}',
+                data: {
+                  estree: Parser.parse('String.raw`\\pi = ${myFunc({ a: 10 })}`', {
+                    ecmaVersion: 'latest',
+                    sourceType: 'module',
+                  }),
+                },
+              },
+            ],
+          }),
+        ])
+      ])
+    );
+  });
+
+  it('should parse JS expressions with string matching expression marker', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMdxMathEnhancedPlugin)
+        .runSync(
+          removePosition(
+            unified()
+              .use(remarkParse)
+              .use(remarkMath)
+              .parse(
+                String.raw`
+$\js{"\js{\js{1 + 1}}"}$
+`
+              ),
+            true
+          )
+        )
+    ).toEqual(
+      u('root', [
+        u('paragraph', [
+          u('mdxJsxTextElement', {
+            name: 'Math',
+            attributes: [],
+            children: [
+              {
+                type: 'mdxTextExpression',
+                value: '${"\\js{\\js{1 + 1}}"}',
+                data: {
+                  estree: Parser.parse('String.raw`${"\\js{\\js{1 + 1}}"}`', {
+                    ecmaVersion: 'latest',
+                    sourceType: 'module',
+                  }),
+                },
+              },
+            ],
+          }),
+        ])
+      ])
+    );
+  });
+
+  it('should not match expressionMarker without a following curly', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMdxMathEnhancedPlugin)
+        .runSync(
+          removePosition(
+            unified()
+              .use(remarkParse)
+              .use(remarkMath)
+              .parse(
+                String.raw`
+$\pi = \js$
+`
+              ),
+            true
+          )
+        )
+    ).toEqual(
+      u('root', [
+        u('paragraph', [
+          u('mdxJsxTextElement', {
+            name: 'Math',
+            attributes: [],
+            children: [
+              {
+                type: 'mdxTextExpression',
+                value: '\\pi = \\js',
+                data: {
+                  estree: Parser.parse('String.raw`\\pi = \\js`', {
+                    ecmaVersion: 'latest',
+                    sourceType: 'module',
+                  }),
+                },
+              },
+            ],
+          }),
+        ])
+      ])
+    );
+  });
+
+  it('should blow up with unclosed js expressions', () => {
+    expect(() =>
       unified()
         .use(remarkParse)
         .use(remarkMath)
@@ -179,12 +305,7 @@ $$\pi = \js{Math.PI$$
 `
         )
         .toString()
-    ).toEqual(
-      String.raw`Hey this is math with JS
-
-<Math>{\pi = \js{Math.PI}</Math>
-`
-    );
+    ).toThrowError()
   });
 
   it('should allow custom component name', () => {
@@ -207,14 +328,15 @@ $$\pi = \js{Math.PI$$
     );
   });
 
-  it('should allow custom component name', () => {
+  it('should allow custom expressionMarker', () => {
     expect(
       unified()
         .use(remarkParse)
         .use(remarkMath)
         .use(remarkMdx)
         .use(remarkMdxMathEnhancedPlugin, {
-          expressionPattern: /\[\[([^\{\}]+)\]\]/gm,
+          startDelimiter: '[[',
+          endDelimiter: ']]'
         } as any)
         .use(remarkStringify)
         .processSync(
