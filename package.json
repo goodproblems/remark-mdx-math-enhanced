@@ -1,5 +1,5 @@
 {
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "name": "remark-mdx-math-enhanced",
   "license": "MIT",
   "main": "dist/index.js",
