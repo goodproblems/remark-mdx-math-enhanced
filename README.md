@@ -1,14 +1,22 @@
 # Remark MDX math enhanced
 
-> An MDX plugin enhancing math environments by adding support for embedded JS expressions (including full access to props, exports, etc), analogous to how MDX supports JS expressions inside of `{...}`
+> An MDX plugin that adds support for math environments with embedded JS expressions
 
-**🚨 Important Note:** This plugin is quite new and currently still in beta, it's possible the API and/or approach may change so **use at your own risk**. Feedback / ideas are also appreciated!
+---
 
-The main difference with this plugin and [rehype-katex](https://github.com/remarkjs/remark-math/tree/main/packages/rehype-katex) is that instead of rendering math nodes at compile time, it instead transforms math nodes into JSX elements which will render their math (passed as `children` prop) at runtime. Any JS expressions embedded in katex will be parsed by [acorn](https://github.com/acornjs/acorn) and transformed to MDX expression nodes.
+**🚨 Important Note:** This plugin is quite new and currently still in beta, it's possible the API and/or approach may change so **use at your own risk**.
 
-**Note:** This plugin expects you to define your own `Math` component which will handle rendering. For an example implementation of a `<Math/>` component using [Katex](http://katex.org) see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
+---
 
-**Note:** Rendering math at runtime instead of compile time means browsers have to do more work. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
+The standard approach to rendering math in MDX is to use remark-math to parse math nodes, and then rehype-katex to compile math nodes to HTML at compile time. This works great in most cases, however it does have the downside that your math must be entirely static (i.e. not containing any JS expressions). 
+
+That's where this plug-in comes into play. Instead of rendering math nodes to HTML at compile time, they are instead transformed into JSX elements. Any JS expressions embedded in katex will be parsed by [acorn](https://github.com/acornjs/acorn) and transformed to MDX expression nodes.
+
+## Notes
+
+1. This plugin expects you to define your own `Math` component which will handle rendering. For an example implementation of a `<Math/>` component using [Katex](http://katex.org) see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
+
+2. Rendering math at runtime instead of compile time means browsers have to do more work. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
 
 ## Install
 
