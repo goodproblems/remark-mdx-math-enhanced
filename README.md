@@ -74,8 +74,12 @@ Configuration (optional).
 
 ###### `options.component`
 
-Name of react component which will be used to render math
+Name of react component which will be used to render math, default is 'Math'
 
-###### `options.expressionPattern`
+###### `options.startDelimiter`
 
-Regular expression that matches JS expressions embedded in math. Default regex matches `\js{...}`
+Start delimiter of JS expressions, default is `\js{`
+
+###### `options.endDelimiter`
+
+Start delimiter of JS expressions, default is `}`
