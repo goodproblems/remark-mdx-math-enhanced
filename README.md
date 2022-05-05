@@ -8,7 +8,7 @@ This package allows math environments in MDX documents to contain embedded JavaS
 
 ## How it works
 
-Math nodes produced by [remark-math](https://github.com/remarkjs/remark-math/tree/main/packages/remark-math) are transformed into React elements at compile time and rendered at run time via a component which your app is expected to provide (default is `Math` but is configurable)
+Math nodes produced by [remark-math](https://github.com/remarkjs/remark-math/tree/main/packages/remark-math) are transformed into JSX element nodes at compile time and rendered at run time via a React component which your app is expected to provide (default is `Math` but is configurable)
 
 ---
 
@@ -19,9 +19,9 @@ Math nodes produced by [remark-math](https://github.com/remarkjs/remark-math/tre
 
 ## Notes
 
-1. This plugin expects you to define your own `Math` component which will handle rendering. For an example implementation of a `<Math/>` component using [Katex](http://katex.org) see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
+- This plugin expects you to define your own `Math` component which will handle rendering. For an example implementation of a `<Math/>` component using [Katex](http://katex.org) see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
 
-2. Rendering math at runtime instead of compile time means browsers have to do more work. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
+- Rendering math at runtime instead of compile time means that client-side JS is required, and browsers have to do a fair bit more work. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
 
 ## Install
 
