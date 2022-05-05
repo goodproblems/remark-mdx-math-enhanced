@@ -57,7 +57,7 @@ export default function MDXContent(props) {
 }
 ```
 
-Note how `\js{...}` have been replaced by `${...}` which are valid [string interpolation placeholders](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation). This replacement is done via regex, and is configureable.
+Note how `\js{...}` have been replaced by `${...}` which are valid [string interpolation placeholders](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#string_interpolation).
 
 
 ## API
