@@ -21,7 +21,7 @@ Math nodes produced by [remark-math](https://github.com/remarkjs/remark-math/tre
 
 - This plugin expects you to define your own `Math` component which will handle rendering. For an example implementation of a `<Math/>` component using [Katex](http://katex.org) see [examples/Math.js](https://github.com/goodproblems/remark-mdx-math-enhanced/tree/master/examples/Math.js)
 
-- Rendering math at runtime instead of compile time means that client-side JS is required, and browsers have to do a fair bit more work. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
+- Rendering math at runtime instead of at compile time means that client-side JS is required, and that more browser processing power is required for rendering. Accordingly, this plugin should only be used in cases where dynamic math (i.e. math with JS expressions inside) is actually required
 
 ## Install
 
