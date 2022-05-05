@@ -164,7 +164,7 @@ $$
     );
   });
 
-  it('should parse JS expressions with nested delimiters', () => {
+  it('should parse JS expressions with nested curlies', () => {
     expect(
       unified()
         .use(remarkParse)
@@ -194,6 +194,48 @@ $\pi = \js{myFunc({ a: 10 })}$
                 value: '\\pi = ${myFunc({ a: 10 })}',
                 data: {
                   estree: Parser.parse('String.raw`\\pi = ${myFunc({ a: 10 })}`', {
+                    ecmaVersion: 'latest',
+                    sourceType: 'module',
+                  }),
+                },
+              },
+            ],
+          }),
+        ])
+      ])
+    );
+  });
+
+  it('should parse JS expressions with string matching expression marker', () => {
+    expect(
+      unified()
+        .use(remarkParse)
+        .use(remarkMdxMathEnhancedPlugin)
+        .runSync(
+          removePosition(
+            unified()
+              .use(remarkParse)
+              .use(remarkMath)
+              .parse(
+                String.raw`
+$\js{"\js{\js{1 + 1}}"}$
+`
+              ),
+            true
+          )
+        )
+    ).toEqual(
+      u('root', [
+        u('paragraph', [
+          u('mdxJsxTextElement', {
+            name: 'Math',
+            attributes: [],
+            children: [
+              {
+                type: 'mdxTextExpression',
+                value: '${"\\js{\\js{1 + 1}}"}',
+                data: {
+                  estree: Parser.parse('String.raw`${"\\js{\\js{1 + 1}}"}`', {
                     ecmaVersion: 'latest',
                     sourceType: 'module',
                   }),
@@ -293,11 +335,12 @@ $$\pi = \js{Math.PI$$
         .use(remarkMath)
         .use(remarkMdx)
         .use(remarkMdxMathEnhancedPlugin, {
-          expressionMarker: '#'
+          startDelimiter: '[[',
+          endDelimiter: ']]'
         } as any)
         .use(remarkStringify)
         .processSync(
-          String.raw`Hey this is math with JS $\pi = #{Math.PI}$`
+          String.raw`Hey this is math with JS $\pi = [[Math.PI]]$`
         )
         .toString()
     ).toEqual(
