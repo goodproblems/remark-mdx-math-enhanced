@@ -5,7 +5,7 @@ import remarkMath from 'remark-math';
 import remarkParse from 'remark-parse';
 import remarkMdx from 'remark-mdx';
 import remarkStringify from 'remark-stringify';
-import remarkMdxMathEnhancedPlugin from './remarkMathMdx';
+import remarkMdxMathEnhancedPlugin from './remarkMdxMathEnhanced';
 import { removePosition } from 'unist-util-remove-position';
 
 describe('remarkMdxMathEnhancedPlugin', () => {
